@@ -1,0 +1,2 @@
+# pokerTracker
+Friendly Poker Calcalutor
