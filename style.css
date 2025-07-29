@@ -1,0 +1,96 @@
+body {
+  font-family: Arial, sans-serif;
+  background-image: url("images/rain.jpg");   
+  background-repeat: repeat-y;
+  background-position: center top;
+  background-size: auto 100%;
+  padding: 30px;
+  color: #333;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* top align */
+  align-items: center;          /* center horizontally */
+  padding-top: 30px;            /* extra spacing from top */
+}
+
+h1 {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: white;
+  text-shadow: 0 0 5px rgba(0,0,0,0.7);
+}
+
+#form {
+  background: rgba(255, 255, 255, 0.85);        /* softer white */
+  backdrop-filter: blur(10px);                   /* blur effect */
+  -webkit-backdrop-filter: blur(10px);           /* Safari support */
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#form input {
+  display: block;
+  width: 100%;
+  margin: 1px 0;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+#form button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#form button:hover {
+  background-color: #45a049;
+}
+
+#output {
+  margin: 20px auto 0 auto; /* smaller top margin */
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#output div {
+  margin-bottom: 15px;
+  border-bottom: 0px solid #ddd;
+  padding-bottom: 0px;
+}
+
+#form label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 10px;
+}
+
+#chipValueInput {
+  width: 100px;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+#overlay {
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background-color: rgba(0,0,0,0.3); /* dark transparent overlay */
+  z-index: -1;
+}
+
+input, button {
+  width: 37%;
+  box-sizing: border-box;
+}
+

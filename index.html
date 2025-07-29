@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Poker Tracker</title>
+
+  <link rel="stylesheet" href="style.css" /> // link to css file
+</head>
+
+<body>
+  <h1>Poker Tracker</h1>
+
+<div id="overlay"></div>
+<div id="content">
+  <!-- your form and output here -->
+</div>
+
+<div id="form">
+  <label>
+    Chip Value ($):
+    <input id="chipValueInput" type="number" step="0.01" value="0.25" />
+  </label>
+  <br /><br />
+  <input id="playerName" placeholder="Player Name" />
+  <input id="buyIn" type="number" placeholder="Buy-in Amount ($)" />
+  <button onclick="addPlayer()">Add Player</button>
+</div>
+
+  <div id="output">
+  <p>No players yet.</p>
+
+</div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
