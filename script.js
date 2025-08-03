@@ -109,42 +109,43 @@ function generateReport() {
   let report = "";
 
   if (losers.length === 0) {
-    report = "All players have settled balances.";
-  } else {
-    report = `<table style="width:100%; border-collapse: collapse;">
+  report = "<p>All players have settled balances.</p>";
+} else {
+  report = `
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
       <thead>
-        <tr>
+        <tr style="background-color: #4CAF50; color: white;">
+          <th style="padding: 8px; border: 1px solid #ddd;">Loser</th>
+          <th style="padding: 8px; border: 1px solid #ddd;">Winner</th>
+          <th style="padding: 8px; border: 1px solid #ddd; text-align: right;">Amount ($)</th>
         </tr>
       </thead>
       <tbody>`;
 
-    losers.forEach(loser => {
-      let amountOwed = -loser.profit; // positive amount loser owes
+  losers.forEach(loser => {
+    let amountOwed = -loser.profit; // positive
 
-      winners.forEach(winner => {
-        if (amountOwed <= 0) return;
+    winners.forEach(winner => {
+      if (amountOwed <= 0) return;
+      if (winner.profit <= 0) return;
 
-        const winnerShare = winner.profit;
-        if (winnerShare <= 0) return;
+      const payment = Math.min(amountOwed, winner.profit);
 
-        // How much loser pays this winner
-        const payment = Math.min(amountOwed, winnerShare);
+      report += `
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ddd;">${loser.name}</td>
+          <td style="padding: 8px; border: 1px solid #ddd;">${winner.name}</td>
+          <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${payment.toFixed(2)}</td>
+        </tr>
+      `;
 
-        report += `<tr>
-          <td style="padding: 6px; border-bottom: 1px solid #eee;">${loser.name}</td>
-          <td style="padding: 6px; border-bottom: 1px solid #eee;">owes</td>
-          <td style="padding: 6px; border-bottom: 1px solid #eee;">${winner.name}</td>
-          <td style="padding: 6px; border-bottom: 1px solid #eee; text-align:right;">$${payment.toFixed(2)}</td>
-        </tr>`;
-
-        // Update owed and winner profit
-        amountOwed -= payment;
-        winner.profit -= payment;
-      });
+      amountOwed -= payment;
+      winner.profit -= payment;
     });
+  });
 
-    report += `</tbody></table>`;
-  }
+  report += `</tbody></table>`;
+}
 
   document.getElementById("report").innerHTML = report;
 }
