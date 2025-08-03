@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Poker Tracker</title>
 
-  <link rel="stylesheet" href="style.css" /> // link to css file
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -23,16 +23,25 @@
     Chip Value ($):
     <input id="chipValueInput" type="number" step="0.01" value="0.25" />
   </label>
-  <br /><br />
+
   <input id="playerName" placeholder="Player Name" />
   <input id="buyIn" type="number" placeholder="Buy-in Amount ($)" />
   <button onclick="addPlayer()">Add Player</button>
 </div>
 
-  <div id="output">
+<div id="output">
   <p>No players yet.</p>
-
 </div>
+
+<div id="chipTotals" style="margin-top: 20px; font-weight: bold;">
+  Total Chips: <span id="totalChips">0</span> | Remaining Chips: <span id="remainingChips">0</span>
+</div>
+
+<button id="generateReportBtn" onclick="generateReport()" style="margin-top:20px;">
+  Generate Report
+</button>
+
+<div id="report" style="margin-top:15px; font-weight:bold;"></div>
 
   <script src="script.js"></script>
 </body>

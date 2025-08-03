@@ -1,18 +1,20 @@
 body {
   font-family: Arial, sans-serif;
-  background-image: url("images/rain.jpg");   
+  background-image: url("images/rain.jpg");
   background-repeat: repeat-y;
   background-position: center top;
   background-size: auto 100%;
-  padding: 30px;
   color: #333;
   min-height: 100vh;
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* top align */
-  align-items: center;          /* center horizontally */
-  padding-top: 30px;            /* extra spacing from top */
+  justify-content: flex-start;
+  align-items: center;
+
+  padding-top: 20px; /* spacing from the top */
+  padding-left: 0;
+  padding-right: 0; /* padding on the sides */
 }
 
 h1 {
@@ -25,7 +27,7 @@ h1 {
 #form {
   background: rgba(255, 255, 255, 0.85);        /* softer white */
   backdrop-filter: blur(10px);                   /* blur effect */
-  -webkit-backdrop-filter: blur(10px);           /* Safari support */
+  -webkit-backdrop-filter: blur(10px);
   padding: 20px;
   border-radius: 10px;
   max-width: 400px;
@@ -94,3 +96,44 @@ input, button {
   box-sizing: border-box;
 }
 
+#generateReportBtn {
+  padding: 12px 20px;         /* Adjust button size */
+  font-size: 1.1rem;          /* Bigger text */
+  background-color: #4CAF50;  /* Green background */
+  color: white;               /* White text */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#generateReportBtn:hover {
+  background-color: #45a049;  /* Darker green on hover */
+}
+
+/* Style the report text area */
+#report {
+  margin-top: 15px;
+  font-weight: bold;
+  background-color: #f9f9f9;  /* Light background */
+  color: #222;                /* Text color */
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 400px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+  white-space: pre-line;      /* Preserve line breaks */
+}
+
+#chipTotals {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #201ea5;
+  background-color: rgb(165, 204, 199);      /* pure white background */
+  padding: 10px 15px;
+  border-radius: 8px;
+  max-width: 400px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}

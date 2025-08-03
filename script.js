@@ -33,6 +33,8 @@ function addPlayer() {
 
   nameInput.value = "";
   buyInInput.value = "";
+
+  updateChipTotals();
 }
 
 function updateRemaining(index, value) {
@@ -41,6 +43,8 @@ function updateRemaining(index, value) {
     players[index].remainingChips = newVal;
     showPlayers();
     savePlayers();  // <-- Save after update
+
+    updateChipTotals();
   }
 }
 
@@ -77,7 +81,8 @@ function loadPlayers() {
   const saved = localStorage.getItem('players');
   if (saved) {
     players = JSON.parse(saved);
-    showPlayers();  // <-- Use showPlayers to update UI
+    showPlayers();
+    updateChipTotals();
   }
 }
 
@@ -85,6 +90,70 @@ function removePlayer(index) {
   players.splice(index, 1);  // Remove player at given index
   showPlayers();
   savePlayers();             // Save updated list
+  updateChipTotals();
 }
 
 window.onload = loadPlayers;
+
+function generateReport() {
+  const chipValue = getChipValue();
+
+  // Calculate profit/loss for each player
+  players.forEach(p => {
+    p.profit = (p.remainingChips * chipValue) - p.buyIn;
+  });
+
+  const winners = players.filter(p => p.profit > 0);
+  const losers = players.filter(p => p.profit < 0);
+
+  let report = "";
+
+  if (losers.length === 0) {
+    report = "All players have settled balances.";
+  } else {
+    report = `<table style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+        </tr>
+      </thead>
+      <tbody>`;
+
+    losers.forEach(loser => {
+      let amountOwed = -loser.profit; // positive amount loser owes
+
+      winners.forEach(winner => {
+        if (amountOwed <= 0) return;
+
+        const winnerShare = winner.profit;
+        if (winnerShare <= 0) return;
+
+        // How much loser pays this winner
+        const payment = Math.min(amountOwed, winnerShare);
+
+        report += `<tr>
+          <td style="padding: 6px; border-bottom: 1px solid #eee;">${loser.name}</td>
+          <td style="padding: 6px; border-bottom: 1px solid #eee;">owes</td>
+          <td style="padding: 6px; border-bottom: 1px solid #eee;">${winner.name}</td>
+          <td style="padding: 6px; border-bottom: 1px solid #eee; text-align:right;">$${payment.toFixed(2)}</td>
+        </tr>`;
+
+        // Update owed and winner profit
+        amountOwed -= payment;
+        winner.profit -= payment;
+      });
+    });
+
+    report += `</tbody></table>`;
+  }
+
+  document.getElementById("report").innerHTML = report;
+}
+
+
+function updateChipTotals() {
+  const totalChips = players.reduce((sum, p) => sum + p.chips, 0);
+  const remainingChips = players.reduce((sum, p) => sum + p.remainingChips, 0);
+
+  document.getElementById("totalChips").textContent = totalChips.toFixed(2);
+  document.getElementById("remainingChips").textContent = remainingChips.toFixed(2);
+}
