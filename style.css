@@ -20,12 +20,12 @@ body {
 h1 {
   margin-bottom: 30px;
   font-size: 2rem;
-  color: white;
+  color: #FF6F61;
   text-shadow: 0 0 5px rgba(0,0,0,0.7);
 }
 
 #form {
-  background: rgba(255, 255, 255, 0.85);        /* softer white */
+  background: #F0F4F8;
   backdrop-filter: blur(10px);                   /* blur effect */
   -webkit-backdrop-filter: blur(10px);
   padding: 20px;
@@ -37,23 +37,23 @@ h1 {
 #form input {
   display: block;
   width: 100%;
-  margin: 1px 0;
+  margin: 2px 0;
   padding: 8px;
   font-size: 1rem;
 }
 
 #form button {
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #2196F3;
   color: white;
   border: none;
   font-size: 1rem;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 #form button:hover {
-  background-color: #45a049;
+  background-color: #2d6dcc;
 }
 
 #output {
@@ -63,6 +63,7 @@ h1 {
   backdrop-filter: blur(10px);
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
 #output div {
@@ -79,7 +80,7 @@ h1 {
 }
 
 #chipValueInput {
-  width: 100px;
+  width: auto;
   padding: 8px;
   font-size: 1rem;
 }
@@ -97,56 +98,73 @@ input, button {
 }
 
 #generateReportBtn {
-  padding: 12px 20px;         /* Adjust button size */
-  font-size: 1.1rem;          /* Bigger text */
-  background-color: #4CAF50;  /* Green background */
+  padding: 8px 20px;         /* Adjust button size */
+  font-size: 1.2rem;          /* Bigger text */
+  background-color: #2196F3;  /* Green background */
   color: white;               /* White text */
   border: none;
-  border-radius: 6px;
+  border-radius: 60px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 #generateReportBtn:hover {
-  background-color: #45a049;  /* Darker green on hover */
+  background-color: #1976D2;  /* Darker green on hover */
 }
 
 /* Style the report text area */
 #report {
-  margin-top: 15px;
-  font-weight: bold;
-  background-color: #f9f9f9;  /* Light background */
-  color: #222;                /* Text color */
-  padding: 15px;
-  border-radius: 10px;
-  max-width: 400px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  font-family: Arial, sans-serif;
-  white-space: pre-line;      /* Preserve line breaks */
+  width: auto;          /* container fills parent width */
+  max-width: 600px;     /* or any max width you want */
+  margin: 0 auto;       /* center horizontally if max-width set */
+  overflow-x: auto;     /* scroll horizontally if table too wide */
+  box-sizing: border-box;
+  padding: 0 0px;      /* optional side padding */
+  background-color: white;
+}
+
+#report table {
+  border-collapse: collapse;
+  table-layout: auto;
+  width: auto;
+  max-width: auto;
+}
+
+#report th, #report td {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap; /* prevent names/numbers from wrapping */
 }
 
 #chipTotals {
   margin-top: 20px;
   font-weight: bold;
   font-size: 1.1rem;
-  color: #201ea5;
-  background-color: rgb(165, 204, 199);      /* pure white background */
+  color: #000000;
+  background-color: rgb(170, 207, 201);      /* pure white background */
   padding: 10px 15px;
   border-radius: 8px;
   max-width: 400px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   font-family: Arial, sans-serif;
 }
+
 #form button, #generateReportBtn {
   transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 #form button:active, #generateReportBtn:active {
   transform: scale(0.97);
-  background-color: #3e8e41;
+  background-color: #3480ac;
 }
 
-@media (max-width: 480px) {
+/* Remove useless 'dots' on website */
+button + *:empty {
+  display: none;
+}
+
+/* Mobile formatting */
+@media (max-width: 480px) { 
   #form, #output {
     max-width: 90vw;
     width: 90vw;

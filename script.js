@@ -61,9 +61,9 @@ function showPlayers() {
         Buy-in: $${player.buyIn.toFixed(2)} | 
         Chips: ${player.chips} <br/>
         Remaining Chips: 
-        <input type="number" value="${player.remainingChips}" 
-               onchange="updateRemaining(${index}, this.value)" 
-               style="width: 60px;" />
+      <input type="number" value="${player.remainingChips}" 
+            onchange="updateRemaining(${index}, this.value)" 
+            style="width: 75px; height: 28px; font-size: 16px; padding: 4px;" />
         → Cash Out: $${cashOut.toFixed(2)} 
         <button onclick="removePlayer(${index})" style="margin-left:10px; cursor:pointer;">Remove</button>
       </div>
@@ -98,54 +98,66 @@ window.onload = loadPlayers;
 function generateReport() {
   const chipValue = getChipValue();
 
-  // Calculate profit/loss for each player
-  players.forEach(p => {
-    p.profit = (p.remainingChips * chipValue) - p.buyIn;
-  });
+  // Calculate profit/loss, then copy to avoid mutation
+  const playersWithProfit = players.map(p => ({
+    ...p,
+    profit: +(p.remainingChips * chipValue - p.buyIn).toFixed(2),
+  }));
 
-  const winners = players.filter(p => p.profit > 0);
-  const losers = players.filter(p => p.profit < 0);
+  let winners = playersWithProfit.filter(p => p.profit > 0).map(p => ({ ...p }));
+  let losers = playersWithProfit.filter(p => p.profit < 0).map(p => ({ ...p }));
+
+  // Sort so bigger debts/payments are handled first (optional, but recommended)
+  winners.sort((a, b) => b.profit - a.profit);
+  losers.sort((a, b) => a.profit - b.profit);
 
   let report = "";
 
   if (losers.length === 0) {
-  report = "<p>All players have settled balances.</p>";
-} else {
-  report = `
-    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-      <thead>
-        <tr style="background-color: #4CAF50; color: white;">
-          <th style="padding: 8px; border: 1px solid #ddd;">Loser</th>
-          <th style="padding: 8px; border: 1px solid #ddd;">Winner</th>
-          <th style="padding: 8px; border: 1px solid #ddd; text-align: right;">Amount ($)</th>
-        </tr>
-      </thead>
-      <tbody>`;
+    report = "<p>All players have settled balances.</p>";
+  } else {
+    report = `
+      <table style="width: auto; border-collapse: collapse; margin-top: 0px;">
+        <thead>
+          <tr style="background-color: #5aceebff; color: white;">
+            <th style="padding: 8px; border: 1px solid #ddd;">Loser</th>
+            <th style="padding: 8px; border: 1px solid #ddd;">Winner</th>
+            <th style="padding: 8px 0px; border: 1px solid #ddd; text-align: right;">Amount ($)</th>
+          </tr>
+        </thead>
+        <tbody>`;
 
-  losers.forEach(loser => {
-    let amountOwed = -loser.profit; // positive
+    losers.forEach(loser => {
+      let amountOwed = -loser.profit;
 
-    winners.forEach(winner => {
-      if (amountOwed <= 0) return;
-      if (winner.profit <= 0) return;
+      winners.forEach(winner => {
+        if (amountOwed <= 0) return;
+        if (winner.profit <= 0) return;
 
-      const payment = Math.min(amountOwed, winner.profit);
+        const payment = Math.min(amountOwed, winner.profit);
 
-      report += `
-        <tr>
-          <td style="padding: 8px; border: 1px solid #ddd;">${loser.name}</td>
-          <td style="padding: 8px; border: 1px solid #ddd;">${winner.name}</td>
-          <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${payment.toFixed(2)}</td>
-        </tr>
-      `;
+        report += `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; white-space: nowrap;">${loser.name}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; white-space: nowrap;">${winner.name}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: right;">${payment.toFixed(2)}</td>
+          </tr>
+        `;
 
-      amountOwed -= payment;
-      winner.profit -= payment;
+        amountOwed = Math.round((amountOwed - payment) * 100) / 100;
+        winner.profit = Math.round((winner.profit - payment) * 100) / 100;
+      });
     });
-  });
 
-  report += `</tbody></table>`;
-}
+    report += `</tbody></table>`;
+  }
+
+  // Optional: verify totals match
+  const totalOwed = losers.reduce((sum, p) => sum + (-p.profit), 0);
+  const totalPaid = winners.reduce((sum, p) => sum + p.profit, 0);
+  if (Math.abs(totalOwed - totalPaid) > 0.01) {
+    console.error("Warning: totals differ by more than one cent.");
+  }
 
   document.getElementById("report").innerHTML = report;
 }
